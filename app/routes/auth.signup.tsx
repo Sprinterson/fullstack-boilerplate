@@ -11,7 +11,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   try {
     await createUser({ email, password });
-    return redirect('/login');
+    return redirect('/auth/login');
   } catch (error) {
     // Assurer que 'error' est une instance d'Error
     if (error instanceof Error) {

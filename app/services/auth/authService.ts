@@ -16,13 +16,13 @@ export async function createUser({ email, password }: CreateUserArgs) {
     const user = await prisma.user.create({
       data: {
         email,
-        password: passwordHash,
-      },
+        password: passwordHash
+      }
     });
 
     return user;
   } catch (error) {
-    throw new Error('Impossible de créer l\'utilisateur.');
+    throw new Error("Impossible de créer l'utilisateur.");
   }
 }
 
@@ -34,7 +34,7 @@ interface LoginUserArgs {
 
 export async function loginUser({ email, password }: LoginUserArgs) {
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: { email }
   });
 
   if (!user) {

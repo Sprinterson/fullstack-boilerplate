@@ -1,7 +1,7 @@
 export default {
-  content: ["./app/**/*.{js,ts,jsx,tsx}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx}",
+    // autres chemins si nécessaire
+  ],
+  // autres configurations de Tailwind
+};

@@ -3,13 +3,36 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+// Pour l'inscription des utilisateurs
+interface CreateUserArgs {
+  email: string;
+  password: string;
+}
+
+export async function createUser({ email, password }: CreateUserArgs) {
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: passwordHash,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    throw new Error('Impossible de créer l\'utilisateur.');
+  }
+}
+
+// Pour la connexion des utilisateurs
 interface LoginUserArgs {
   email: string;
   password: string;
 }
 
 export async function loginUser({ email, password }: LoginUserArgs) {
-  // Trouver l'utilisateur par email
   const user = await prisma.user.findUnique({
     where: { email },
   });
@@ -18,14 +41,11 @@ export async function loginUser({ email, password }: LoginUserArgs) {
     throw new Error('Utilisateur non trouvé');
   }
 
-  // Vérifier le mot de passe
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     throw new Error('Mot de passe incorrect');
   }
-
-  // TODO: Gérer la création de la session
 
   return user;
 }
